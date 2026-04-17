@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | Netflix</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg">
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap");
+
+    body {
+      background: #0f0f0f;
+      color: #e5e5e5;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: transparent;
+      transition: background-color 0.4s ease-in-out;
+      padding: 15px 30px;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand img {
+      width: 110px;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+      color: #e50914 !important;
+    }
+
+    /* Hero Section */
+    .page-hero {
+      position: relative;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(15, 15, 15, 1) 100%), url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2670&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding: 180px 20px 100px;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .page-hero h1 {
+      font-weight: 800;
+      font-size: 4rem;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, #fff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .page-hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 600px;
+      margin-top: 15px;
+      animation: fadeInUp 1s ease-out 0.2s backwards;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Blog Grid */
+    .blog-container {
+      margin-top: -50px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .blog-card {
+      background: rgba(30, 30, 30, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(10px);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 9, 20, 0.2);
+      border-color: rgba(229, 9, 20, 0.3);
+    }
+
+    .blog-card-img-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-card img {
+      height: 240px;
+      object-fit: cover;
+      width: 100%;
+      transition: transform 0.6s ease;
+    }
+
+    .blog-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .img-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(30, 30, 30, 1), transparent);
+    }
+
+    .blog-card-body {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tag {
+      color: #e50914;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .blog-card h5 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .meta {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+    }
+
+    .read-more-btn {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #e50914;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .blog-card:hover .read-more-btn {
+      background: #e50914;
+      box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+    }
+
+    /* Modal Styling */
+    .modal-backdrop.show {
+      opacity: 0.8;
+    }
+
+    .modal-content {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-header {
+      border-bottom: none;
+      padding: 0;
+      position: relative;
+    }
+
+    .modal-header img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .modal-header .btn-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      padding: 10px;
+      z-index: 10;
+    }
+
+    .modal-body {
+      padding: 40px;
+    }
+
+    .modal-tag {
+      color: #e50914;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-title-custom {
+      font-weight: 800;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .modal-meta {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .modal-meta i {
+      color: #e50914;
+    }
+
+    .modal-text {
+      color: #ddd;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .modal-text p {
+      margin-bottom: 20px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f0f0f;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e50914;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container-fluid px-4 px-lg-5">
+      <a class="navbar-brand" href="index.html">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png" alt="Netflix" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto ms-4">
+          <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="index.html#tvshows">TV Shows</a></li>
+          <li class="nav-item"><a class="nav-link text-white active fw-bold" href="blog.html">Blog</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <i class="fa fa-search text-white me-4" style="cursor:pointer;"></i>
+          <i class="fa fa-bell text-white me-4" style="cursor:pointer;"></i>
+          <a href="ADD USER/index.html" target="_blank">
+            <img src="ADD USER/images/defaultuser.png" class="rounded-circle border border-secondary" width="35"
+              style="object-fit:cover; height:35px;" alt="User Image">
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="page-hero text-center">
+    <h1>Inside the Frame</h1>
+    <p>Deep dives, cinematic insights & exclusive movie recommendations curated for cinephiles.</p>
+  </header>
+
+  <!-- BLOG SECTION -->
+  <section class="container blog-container pb-5">
+    <div class="row g-4" id="blog-grid">
+      <!-- Blog cards will be injected here by JS -->
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal fade" id="blogModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <img id="modal-img" src="" alt="Blog Cover" />
+          <div class="img-overlay" style="background: linear-gradient(to top, #181818, transparent);"></div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid px-md-5">
+            <div class="modal-tag" id="modal-tag">Tag</div>
+            <h2 class="modal-title-custom" id="modal-title">Title</h2>
+            <div class="modal-meta" id="modal-meta">
+              <span><i class="fa-solid fa-user-pen"></i> <span id="modal-author">Author</span></span>
+              <span><i class="fa-regular fa-clock"></i> <span id="modal-time">Time</span></span>
+              <span><i class="fa-regular fa-calendar"></i> <span id="modal-date">Date</span></span>
+            </div>
+            <div class="modal-text" id="modal-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Blog Data
+    const blogs = [
+      {
+        id: "evolution-cinematic",
+        title: "The Evolution of Cinematic Universes",
+        tag: "Industry Trends",
+        author: "Sarah Jenkins",
+        readTime: "8 min read",
+        date: "Oct 12, 2026",
+        img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop",
+        content: `In the past two decades, Hollywood has witnessed a massive paradigm shift from standalone blockbuster franchises to sprawling interconnected cinematic universes. Pioneered by Marvel Studios with "Iron Man" in 2008, the concept has since been adopted (with varying degrees of success) by DC, Universal's MonsterVerse, and even the Conjuring horror universe.\n\nThe appeal of a cinematic universe lies in its ability to offer serialized storytelling on a massive scale. Much like television series or comic books, cinematic universes reward long-term viewer investment. Characters cross over, storylines intertwine over multiple films, and audiences are treated to grand crossover events akin to season finales.\n\nHowever, building a successful universe requires meticulous planning and a unified creative vision. Kevin Feige's leadership at Marvel created a cohesive roadmap that balanced individual character arcs with an overarching narrative. Conversely, studios that rushed to team-up films without establishing their core characters first often faced critical and commercial stumbling blocks.\n\nLooking to the future, the challenge for these universes is sustaining audience interest without succumbing to "superhero fatigue." Filmmakers are now pivoting toward genre-bending entries—combining superhero tropes with political thrillers, martial arts, or supernatural horror—to keep the formula fresh. The evolution continues as the lines between streaming television (like Disney+ shows) and theatrical releases blur, creating a truly transmedia storytelling experience.`
+      },
+      {
+        id: "auteur-theory",
+        title: "Auteur Theory: Directors Who Changed Cinema",
+        tag: "Filmmaking",
+        author: "David Chen",
+        readTime: "12 min read",
+        date: "Oct 05, 2026",
+        img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1000&auto=format&fit=crop",
+        content: `The Auteur Theory, a concept popularized by French film critics in the 1950s, posits that the director is the primary author of a film, imparting a distinct visual and thematic signature despite the collaborative nature of filmmaking. Today, this theory is perfectly exemplified by modern masters like Christopher Nolan, Quentin Tarantino, and Martin Scorsese.\n\nChristopher Nolan has built his career on mind-bending narratives combined with practical blockbuster spectacle. From the non-linear structure of "Memento" to the temporal mechanics of "Tenet" and the historical weight of "Oppenheimer," Nolan’s signature involves complex intellectual concepts anchored by intense emotional cores and a staunch dedication to shooting on film.\n\nQuentin Tarantino, on the other hand, is defined by his hyper-stylized dialogue, non-chronological storytelling, deep homages to obscure cinema, and an unapologetic approach to violence. A Tarantino film is instantly recognizable within its first five minutes, a testament to his uncompromising, singular vision.\n\nMartin Scorsese represents the enduring power of the auteur. Over half a century, his exploration of faith, guilt, crime, and the American dream remains unparalleled. His energetic editing style, frequent collaborations with actors like Robert De Niro and Leonardo DiCaprio, and deep love for cinematic history shine through every frame.\n\nThese directors prove that even in an era dominated by corporate studio IP, a distinct, powerful human voice behind the camera remains cinema's most compelling element.`
+      },
+      {
+        id: "golden-animation",
+        title: "The Golden Age of 3D Animation",
+        tag: "Animation",
+        author: "Maya Patel",
+        readTime: "6 min read",
+        date: "Sep 28, 2026",
+        img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop",
+        content: `Animation is not a genre; it is a medium. This phrase, often championed by directors like Guillermo del Toro, has never been more relevant. We are currently experiencing a renaissance in 3D animation, breaking free from the hyper-realistic styles that dominated the early 2000s in favor of highly stylized, artistic expressions.\n\nThe catalyst for this shift was undoubtedly Sony Pictures Animation's "Spider-Man: Into the Spider-Verse" (2018). By combining 3D CGI with 2D hand-drawn techniques, comic book Ben-Day dots, varying frame rates, and vibrant pop-art colors, the film revolutionized what mainstream animation could look like. It proved that audiences were hungry for visual innovation.\n\nSince then, studios have enthusiastically embraced stylized CGI. DreamWorks' "Puss in Boots: The Last Wish" and Paramount's "Teenage Mutant Ninja Turtles: Mutant Mayhem" utilized painterly and sketch-like textures, resulting in breathtaking visuals that felt like moving concept art.\n\nThis shift allows animators to lean into the inherent strengths of the medium—exaggeration, surrealism, and boundless creativity—rather than constrained emulation of live-action realism. As tools become more advanced and studios become bolder, the boundaries of animated storytelling will continue to expand, proving that the medium's golden age is happening right now.`
+      },
+      {
+        id: "cyberpunk-resonance",
+        title: "Why Cyberpunk Themes Resonate Today",
+        tag: "Sci-Fi",
+        author: "Alex Mercer",
+        readTime: "10 min read",
+        date: "Sep 15, 2026",
+        img: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?q=80&w=1000&auto=format&fit=crop",
+        content: `"High tech, low life." This the defining mantra behind Cyberpunk, a sci-fi subgenre born in the 1980s that imagined futures dominated by mega-corporations, neon-drenched cityscapes, advanced cybernetics, and severe social inequality. Masterpieces like "Blade Runner" and "The Matrix" set the standard, but why does this aesthetic feel more relevant today than ever?\n\nThe answer lies in our current technological trajectory. The fears that birthed cyberpunk are no longer abstract; they are the headlines of today. The unchecked power of corporate tech giants, the erosion of privacy, the rise of powerful AI, and the gap between the ultra-wealthy and the working class all closely mirror the dystopian anxieties of cyberpunk fiction.\n\nModern cinema and television have seized on this relevance. Projects like "Blade Runner 2049", "Cyberpunk: Edgerunners", and "Altered Carbon" don't just lean on striking visuals—they use the genre as a lens to critique modern capitalism and existentialism. What does it mean to be human when your memories can be implanted or your consciousness transferred?\n\nFurthermore, the aesthetic of cyberpunk—with its synth-heavy soundtracks, holographic advertisements, and gritty urban decay juxtaposed with gleaming technology—provides an intoxicating visual playground for filmmakers. As long as our collective anxiety about technology's role in society persists, the cyberpunk genre will continue to hold a dark, neon-lit mirror up to our reality.`
+      },
+      {
+        id: "horror-renaissance",
+        title: "Horror's Renaissance: Psychological Chills",
+        tag: "Horror",
+        author: "Elena Rossi",
+        readTime: "7 min read",
+        date: "Sep 02, 2026",
+        img: "https://images.unsplash.com/photo-1505635552518-3448ff116af3?q=80&w=1000&auto=format&fit=crop",
+        content: `The horror genre has undergone a profound transformation over the last decade. Moving away from the reliance on cheap jump scares, excessive gore, and repetitive slasher tropes, a new wave of "elevated horror" has emerged, prioritizing deep psychological terror and thematic richness.\n\nDirectors like Jordan Peele ("Get Out", "Us"), Ari Aster ("Hereditary", "Midsommar"), and Robert Eggers ("The Witch", "The Lighthouse") are fundamentally redefining modern horror. Their films are built upon genuine dread and use the terrifying supernatural elements as metaphors for profoundly real human trauma: grief, systemic racism, toxic relationships, and mental illness.\n\nTake "Hereditary" as an example. Strip away the occult elements, and the film remains a devastating, harrowing look at a family collapsing under the weight of grief and inherited mental illness. "Get Out" brilliantly utilizes horror tropes to deliver a slicing, satirical critique of modern liberal racism.\n\nThis renaissance proves that audiences crave horror that sticks with them long after the credits roll. The psychological aspect is vital; monsters under the bed are scary, but the monsters manifesting from our own psyche and society are truly terrifying. By tying horror to profound emotional truths, modern filmmakers are creating modern masterpieces that command critical respect.`
+      },
+      {
+        id: "practical-vs-cgi",
+        title: "The Art of Practical Effects vs. CGI",
+        tag: "Behind The Scenes",
+        author: "Marcus Johnson",
+        readTime: "9 min read",
+        date: "Aug 20, 2026",
+        img: "https://images.unsplash.com/photo-1585647347483-22b66260dfff?q=80&w=1000&auto=format&fit=crop",
+        content: `In the modern blockbuster landscape, Computer-Generated Imagery (CGI) is the undisputed king. It allows filmmakers to create the impossible, from tearing apart cities in superhero epics to animating entire alien ecosystems in "Avatar." However, despite the incredible advancements in VFX, there remains a loud, passionate demand for practical effects.\n\nPractical effects—make-up prosthetics, animatronics, miniatures, and actual explosions—provide a tangible reality that the human eye is remarkably good at detecting. When George Miller practically flipped dozens of cars in the Namib desert for "Mad Max: Fury Road," the visceral weight, grit, and danger translated directly to the screen in a way pure CGI cannot replicate.\n\nThe magic happens when the two tools are used in perfect harmony. Classic examples like Spielberg's "Jurassic Park" blended Stan Winston's massive animatronic T-Rex with groundbreaking ILM CGI. Modern triumphs like "Dune" or "Top Gun: Maverick" excel because they prioritize capturing real things in-camera—real jets, real desert landscapes, real constructed sets—and then brilliantly augment them with CGI.\n\nWhen CGI is used to enhance reality rather than replace it entirely, the result is cinema that feels weighty, immersive, and timeless. As audiences become increasingly aware of "weightless" CGI, the directors who master the blend of practical artisanship and digital wizardry will be the ones creating the most breathtaking cinematic experiences.`
+      }
+    ];
+
+    // Render Blogs
+    const grid = document.getElementById('blog-grid');
+    let html = '';
+
+    blogs.forEach((blog) => {
+      html += `
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card" onclick="openModal('${blog.id}')">
+          <div class="blog-card-img-wrapper">
+            <img src="${blog.img}" alt="${blog.title}">
+            <div class="img-overlay"></div>
+          </div>
+          <div class="blog-card-body">
+            <div class="tag">${blog.tag}</div>
+            <h5>${blog.title}</h5>
+            <div class="meta">
+              <span>${blog.readTime}</span>
+              <button class="read-more-btn mt-2">Read Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    });
+
+    grid.innerHTML = html;
+
+    // Modal Logic
+    let modalInstance = null;
+
+    function openModal(id) {
+      const blog = blogs.find(b => b.id === id);
+      if (blog) {
+        document.getElementById('modal-title').innerText = blog.title;
+        document.getElementById('modal-tag').innerText = blog.tag;
+        document.getElementById('modal-author').innerText = blog.author;
+        document.getElementById('modal-time').innerText = blog.readTime;
+        document.getElementById('modal-date').innerText = blog.date;
+        document.getElementById('modal-img').src = blog.img;
+        document.getElementById('modal-content').innerText = blog.content;
+
+        if (!modalInstance) {
+          modalInstance = new bootstrap.Modal(document.getElementById('blogModal'));
+        }
+        modalInstance.show();
+      }
+    }
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
